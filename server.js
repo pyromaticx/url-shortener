@@ -18,12 +18,12 @@ app.get('/:query', (req, res) => {
     }
 });
 
-app.get('/api/:reqUrl', (req, res) => {
-  console.log()
-  let reqUrl = req.params.reqUrl
+app.use('/api',(req, res) => {
+  console.log(req.path);
+  let reqUrl = req.path.toString();
   let validUrl = urlRe.exec(reqUrl);
   if (validUrl) {
-    console.log(validUrl);
+
     counter++;
     let hash = counter.toString(32);
     if (!urlDirectory[hash])
@@ -34,7 +34,7 @@ app.get('/api/:reqUrl', (req, res) => {
     };
     res.send(JSON.stringify(urlDirectory[hash]));
   } else {
-    console.log('invalid');
+    res.send(JSON.stringify({"error": "Invalid URL"}));
   }
 });
 
